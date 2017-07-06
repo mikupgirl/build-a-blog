@@ -20,7 +20,7 @@
 
             <ul>
                 {% for blog in blogs %}
-                <li>{{blog.name}}
+                <li>{{blog.title}}
                     <form method="POST" action="/newpost" style="display:inline-block;">
                         <input type="hidden" name="blog-id" value="{{blog.id}}" />
                         <input type="submit" value="Done!" />
@@ -38,7 +38,7 @@
 
     <ul>
         {% for blog in submitted_blogs %}
-        <li>{{blog.name}}</li>
+        <li>{{blog.title}}</li>
         {% endfor %}
     </ul>
 

@@ -11,12 +11,12 @@ app.secret_key = 'y337kGcys&zP3B'
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
+    title = db.Column(db.String(120))
     body = db.Column(db.String(120))
     submitted = db.Column(db.Boolean)
 
-    def __init__(self, name, body):
-        self.name = name
+    def __init__(self, title, body):
+        self.title = title
         self.body = body
         self.submitted = False
 
@@ -26,8 +26,8 @@ class Blog(db.Model):
 def index():
 
     if request.method == 'POST':
-        blog_name = request.form['blog-id']
-        new_blog = Blog(blog_name, body)
+        blog_name = request.form['blog']
+        new_blog = Blog(blog_name)
         db.session.add(new_blog)
         db.session.commit()
 
@@ -41,7 +41,7 @@ def index():
 def post_blog():
 
     blog_id = int(request.form['blog-id'])
-    blog = Blog.query.get(blog-id)
+    blog = Blog.query.get(blog_id)
     blog.submitted = True
     db.session.add(blog)
     db.session.commit()
