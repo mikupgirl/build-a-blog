@@ -2,10 +2,10 @@
 
 {% block content %}
     <h1>Build a Blog Son!</h1>
-    <form method='post'>
+    <form method='POST'>
         <label>
             Add New Post:
-            <input type="text" name='title' />
+            <input type="text" name='Build a Blog' />
         </label>
         <input type="submit" value='Add Post' />
     </form>
@@ -16,19 +16,19 @@
     <p>No posts yet</p>
     {% else %}
 
-    <h2>Real Deal Blog Listings</h2>
+        <h2>Real Deal Blog Listings</h2>
 
-        <ul>
-            {% for blog in blogs %}
-            <li>{{blog.title}}
-                <form method="POST" action="/newpost" style="display:inline-block;">
-                    <input type="hidden" name="blog-id" value="{{blog.id}}" />
-                    <input type="submit" value="Done!" />
-                </form>
-            </li>
+            <ul>
+                {% for blog in blogs %}
+                <li>{{blog.name}}
+                    <form method="POST" action="/newpost" style="display:inline-block;">
+                        <input type="hidden" name="blog-id" value="{{blog.id}}" />
+                        <input type="submit" value="Done!" />
+                    </form>
+                </li>
 
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </ul>
 
     {% endif %}
 
@@ -38,7 +38,7 @@
 
     <ul>
         {% for blog in submitted_blogs %}
-        <li>{{blog.title}}</li>
+        <li>{{blog.name}}</li>
         {% endfor %}
     </ul>
 

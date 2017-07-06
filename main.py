@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session, flash
+from flask import Flask, request, redirect, render_template, session, flash#can use bcrypt instead of hashlib
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -11,23 +11,23 @@ app.secret_key = 'y337kGcys&zP3B'
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120))
+    name = db.Column(db.String(120))
     body = db.Column(db.String(120))
+    submitted = db.Column(db.Boolean)
 
-    def __init__(self, title, body):
-        self.title = title
+    def __init__(self, name, body):
+        self.name = name
         self.body = body
         self.submitted = False
-        #the error is coming from the fact that we've initialized
-        #submitted to false.
+
 
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
 
     if request.method == 'POST':
-        blog_name = request.form['blog']
-        new_blog = Blog(blog_name)
+        blog_name = request.form['blog-id']
+        new_blog = Blog(blog_name, body)
         db.session.add(new_blog)
         db.session.commit()
 
@@ -40,8 +40,8 @@ def index():
 @app.route('/newpost', methods=['POST'])
 def post_blog():
 
-    task_id = int(request.form['blog-id'])
-    blog = Blog.query.get(blog_id)
+    blog_id = int(request.form['blog-id'])
+    blog = Blog.query.get(blog-id)
     blog.submitted = True
     db.session.add(blog)
     db.session.commit()
