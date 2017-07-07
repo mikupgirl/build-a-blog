@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Build a Blog Son!</h1>
+    <h1 style="text-align: center">Build a Blog Son!</h1>
     <form method='POST'>
         <label>
             Add New Post:
-            <input type="text" name='Build a Blog' />
+            <input type="text" name='blog' />
         </label>
         <input type="submit" value='Add Post' />
     </form>
@@ -21,9 +21,8 @@
             <ul>
                 {% for blog in blogs %}
                 <li>{{blog.title}}
-                    <form method="POST" action="/newpost" style="display:inline-block;">
+                    <form method="POST" action="/newpost">
                         <input type="hidden" name="blog-id" value="{{blog.id}}" />
-                        <input type="submit" value="Done!" />
                     </form>
                 </li>
 
@@ -32,14 +31,7 @@
 
     {% endif %}
 
-    <hr />
 
-    <h2>Blog Listings</h2>
 
-    <ul>
-        {% for blog in submitted_blogs %}
-        <li>{{blog.title}}</li>
-        {% endfor %}
-    </ul>
 
 {% endblock %}
