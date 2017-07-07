@@ -6,6 +6,7 @@ app.config['DEBUG'] =  True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:build-a-blog@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+app.secret_key = 'y337kGcys&zP3B'
 
 class Blog(db.Model):
 
@@ -34,20 +35,55 @@ def index():
 
     blogs = Blog.query.filter_by(submitted=False).all()
     submitted_blogs = Blog.query.filter_by(submitted=True).all()
-    return render_template('todos.html',title="Build a Blog", blogs=blogs, submitted_blogs=submitted_blogs)
+    return render_template('mainBlogPage.html',title="Build a Blog", blogs=blogs, submitted_blogs=submitted_blogs)
 
+@app.route('/blog', methods=['POST', 'GET'])
+def blog():
 
-@app.route('/newpost', methods=['POST'])
-def post_blog():
+    if request.method == 'POST':
+        blog_name_title = request.form['blog_title']
+        blog_name_body = request.form['blog_body']        
+        new_blog = Blog(blog_name_title, blog_name_body)        
+        db.session.add(new_blog)
+        db.session.commit()
 
-    blog_id = int(request.form['blog-id-title'])
-    blog = Blog.query.get(blog_id)
-    blog_body = int(request.form['blog-id-body'])
-    blog = Blog.query.get(blog_body)    
-    db.session.add(blog)
-    db.session.commit()
+    blogs = Blog.query.filter_by(submitted=False).all()
+    submitted_blogs = Blog.query.filter_by(submitted=True).all()
+    return render_template('mainBlogPage.html',title="Build a Blog", blogs=blogs, submitted_blogs=submitted_blogs)
 
-    return redirect('/')
+@app.route('/addBlogEntry', methods=['POST', 'GET'])
+def addBlogEntry():
+    
+    if request.method == 'POST':
+        blog_name_title = request.form['blog_title']
+        blog_name_body = request.form['blog_body']        
+        new_blog = Blog(blog_name_title, blog_name_body)
+        if len(blog_name_title) == 0:
+                flash('Please enter a title', 'error')
+        if len(blog_name_body) == 0:
+                flash('Please enter a blog', 'error')
+        else:
+            db.session.add(new_blog)
+            db.session.commit()
+            return redirect('/blog')
+
+    blogs = Blog.query.filter_by(submitted=False).all()
+    submitted_blogs = Blog.query.filter_by(submitted=True).all()        
+
+    return render_template('addBlogEntry.html')
+
+@app.route('/newpost', methods=['POST', 'GET'])
+def newpost():
+
+    if request.method == 'POST':
+        blog_id = int(request.form['blog-id-title'])
+        blog = Blog.query.get(blog_id)
+        blog_body = int(request.form['blog-id-body'])
+        blog = Blog.query.get(blog_body)    
+        db.session.add(blog)
+        db.session.commit()
+
+    return redirect('/blog')
 
 
 if __name__ == '__main__':

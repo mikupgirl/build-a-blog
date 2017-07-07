@@ -2,22 +2,6 @@
 
 {% block content %}
     <h1 style="text-align: center">Build a Blog Son!</h1>
-    <form method='POST'>
-        <label>
-            Title for your new blog:
-            <input type="text" name='blog_title' /></h1></h1>
-        </label>
-        <br />
-
-    <form method='POST'>
-        <label>
-            Your new blog:
-            <input type="text" name='blog_body' />
-        </label>
-        <input type="submit" value='Add Entry' />
-    </form>
-
-    <hr />
 
     {% if blogs|length == 0 %}
     <p>No posts yet</p>
