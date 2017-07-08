@@ -2,32 +2,25 @@
 
 {% block content %}
         
-<h1>Add a Blog Entry</h1>
+<h1 style="text-align: center">Add a Blog Entry</h1>
 <form action="/addBlogEntry" method='POST'>
     <label for="blog-id-title">
         Title for your new blog:
+        <br />
         <input type="text" name='blog_title' /></h1></h1>
     </label>
     <br /> 
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% for category,message in messages %}
-            <span class="{{category}}">{{message}}</span></p>
-        {% endfor %}
-    {% endwith %}   
+    <span class="error">{{title_error}}</span></p>
 
-
-
-<form action="/addBlogEntry" method='POST'>
+<form action="/addBlogEntry" method='POST' id="blogform" >
     <label for="blog-id-body">
         Your new blog:
-        <input type="text" name='blog_body' />
+        <br />
+        <textarea rows="4" cols="50" name='blog_body' form="blogform"></textarea>
     </label>
     <br />
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% for category,message in messages %}
-            <span class="{{category}}">{{message}}</span></p>
-        {% endfor %}
-    {% endwith %}    
+    <span class="error" name='blog_body'>{{blog_error}}</span></p>
+
     <input type="submit" value='Add Entry' />
 
 </form>

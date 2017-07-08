@@ -54,15 +54,22 @@ def blog():
 @app.route('/addBlogEntry', methods=['POST', 'GET'])
 def addBlogEntry():
     
+    title_error = ''
+    blog_error = ''
+    blog_title = ''
+    blog_body = ''
+
     if request.method == 'POST':
         blog_name_title = request.form['blog_title']
-        blog_name_body = request.form['blog_body']        
-        new_blog = Blog(blog_name_title, blog_name_body)
+        blog_name_body = request.form['blog_body']
         if len(blog_name_title) == 0:
-                flash('Please enter a title', 'error')
+            title_error = 'Please enter a title'
+
         if len(blog_name_body) == 0:
-                flash('Please enter a blog', 'error')
-        else:
+            blog_error = 'Please write your blog'
+
+        if not title_error and not blog_error:
+            new_blog = Blog(blog_name_title, blog_name_body)
             db.session.add(new_blog)
             db.session.commit()
             return redirect('/blog')
@@ -70,7 +77,7 @@ def addBlogEntry():
     blogs = Blog.query.filter_by(submitted=False).all()
     submitted_blogs = Blog.query.filter_by(submitted=True).all()        
 
-    return render_template('addBlogEntry.html')
+    return render_template('addBlogEntry.html', title_error=title_error, blog_error=blog_error)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
