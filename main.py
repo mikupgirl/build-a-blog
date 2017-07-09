@@ -72,10 +72,7 @@ def addBlogEntry():
             new_blog = Blog(blog_name_title, blog_name_body)
             db.session.add(new_blog)
             db.session.commit()
-            return redirect('/blog')
-
-    blogs = Blog.query.filter_by(submitted=False).all()
-    submitted_blogs = Blog.query.filter_by(submitted=True).all()        
+            return redirect('/blog')      
 
     return render_template('addBlogEntry.html', title_error=title_error, blog_error=blog_error)
 
@@ -92,6 +89,13 @@ def newpost():
 
     return redirect('/blog')
 
+@app.route('/singleBlogs', methods=['POST', 'GET'])
+def singleBlogs():
+
+    blog_id_title = request.args.get('blog-id-title')
+    blog_id_body = request.args.get('blog-id-body')
+    blogs = Blog.query.get("blog.id")
+    return render_template('singleBlogEntries.html', blog_id_body=blog_id_body, blog_id_title=blog_id_title, blogs=blogs)
 
 if __name__ == '__main__':
     app.run()
