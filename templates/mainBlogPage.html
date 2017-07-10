@@ -10,13 +10,7 @@
             {% for blog in blogs %}
             <h1><a href="singleBlogs?id={{blog.id}}">{{blog.title}}</h1></a>
             <p>{{blog.body}}</p>
-                <form method="POST" action="/newpost">
-                    <input type="hidden" name="blog-id-title" value="{{blog.id}}" />
-                </form>
-            <br />
-                <form method="POST" action="/newpost">
-                    <input type="hidden" name="blog-id-body" value="{{blog.id}}" />
-                </form>
+
             {% endfor %}
 
     {% endif %}

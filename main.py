@@ -34,8 +34,7 @@ def index():
         db.session.commit()
 
     blogs = Blog.query.filter_by(submitted=False).all()
-    submitted_blogs = Blog.query.filter_by(submitted=True).all()
-    return render_template('mainBlogPage.html',title="Build a Blog", blogs=blogs, submitted_blogs=submitted_blogs)
+    return render_template('mainBlogPage.html',title="Build a Blog", blogs=blogs)
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
@@ -48,8 +47,7 @@ def blog():
         db.session.commit()
 
     blogs = Blog.query.filter_by(submitted=False).all()
-    submitted_blogs = Blog.query.filter_by(submitted=True).all()
-    return render_template('mainBlogPage.html',title="Build a Blog", blogs=blogs, submitted_blogs=submitted_blogs)
+    return render_template('mainBlogPage.html',title="Build a Blog", blogs=blogs)
 
 @app.route('/addBlogEntry', methods=['POST', 'GET'])
 def addBlogEntry():
@@ -89,13 +87,21 @@ def newpost():
 
     return redirect('/blog')
 
-@app.route('/singleBlogs', methods=['POST', 'GET'])
+@app.route('/singleBlogs')
 def singleBlogs():
 
-    blog_id_title = request.args.get('blog-id-title')
-    blog_id_body = request.args.get('blog-id-body')
-    blogs = Blog.query.get("blog.id")
-    return render_template('singleBlogEntries.html', blog_id_body=blog_id_body, blog_id_title=blog_id_title, blogs=blogs)
+    if request.method == 'POST':
+        blog_id_title = request.form['blog_id_title']
+        blog_id_body = request.form['blog_id_body']        
+
+
+    #blogs = Blog.query.filter_by(submitted=False).all() 
+
+    #blog_id_title = request.args.get('blog-id-title')
+    #blog_id_body = request.args.get('blog-id-body')       
+
+    blogs = Blog.query.filter_by(id='{{blog.id}}').all()
+    return render_template('singleBlogEntries.html', blogs=blogs)
 
 if __name__ == '__main__':
     app.run()
