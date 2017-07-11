@@ -23,18 +23,10 @@ class Blog(db.Model):
 
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=['GET'])
 def index():
 
-    if request.method == 'POST':
-        blog_name_title = request.form['blog_title']
-        blog_name_body = request.form['blog_body']        
-        new_blog = Blog(blog_name_title, blog_name_body)        
-        db.session.add(new_blog)
-        db.session.commit()
-
-    blogs = Blog.query.filter_by(submitted=False).all()
-    return render_template('mainBlogPage.html',title="Build a Blog", blogs=blogs)
+    return redirect('/blog')
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
@@ -69,39 +61,19 @@ def addBlogEntry():
         if not title_error and not blog_error:
             new_blog = Blog(blog_name_title, blog_name_body)
             db.session.add(new_blog)
-            db.session.commit()
-            return redirect('/blog')      
+            db.session.commit()     
+           
+            return render_template('singleBlogEntries.html', blog=new_blog)   
 
     return render_template('addBlogEntry.html', title_error=title_error, blog_error=blog_error)
 
-@app.route('/newpost', methods=['POST', 'GET'])
-def newpost():
-
-    if request.method == 'POST':
-        blog_id = int(request.form['blog-id-title'])
-        blog = Blog.query.get(blog_id)
-        blog_body = int(request.form['blog-id-body'])
-        blog = Blog.query.get(blog_body)    
-        db.session.add(blog)
-        db.session.commit()
-
-    return redirect('/blog')
 
 @app.route('/singleBlogs')
 def singleBlogs():
-
-    if request.method == 'POST':
-        blog_id_title = request.form['blog_id_title']
-        blog_id_body = request.form['blog_id_body']        
-
-
-    #blogs = Blog.query.filter_by(submitted=False).all() 
-
-    #blog_id_title = request.args.get('blog-id-title')
-    #blog_id_body = request.args.get('blog-id-body')       
-
-    blogs = Blog.query.filter_by(id='{{blog.id}}').all()
-    return render_template('singleBlogEntries.html', blogs=blogs)
+    
+    blog_id = request.args.get("id")       
+    blog = Blog.query.get(blog_id)
+    return render_template('singleBlogEntries.html', blog=blog)
 
 if __name__ == '__main__':
     app.run()
